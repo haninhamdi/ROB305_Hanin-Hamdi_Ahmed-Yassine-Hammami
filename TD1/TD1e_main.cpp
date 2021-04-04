@@ -122,44 +122,36 @@ int main(int argc, char* argv[])
     double* pA = &a ; 
     double* pB = &b ; 
     unsigned int nSamples ; 
-    double samplingPeriod_ms ; 
+    double samplingPeriod_ms , duration_ms ; 
     
     /* Read the initialization of the number of samples and the samplingPeriod_ms from the shell */ 
     if (argc > 2)
     {
-        nSamples = stoi(argv[1], nullptr, 10) ; 
-        samplingPeriod_ms = stoi(argv[2], nullptr, 10) ; 
+        duration_ms = stoi(argv[1], nullptr, 10) ;
+        nSamples = stoi(argv[2], nullptr, 10) ; 
+        samplingPeriod_ms = stoi(argv[3], nullptr, 10) ; 
     }
     
     /* Calibration using timers */
     calib(pA, pB, nSamples, samplingPeriod_ms) ; 
     cout<<"Calibration using timers : l(t) = "<<a<<"*t + "<<b<<"   ( t(s) )"<<endl ; 
-    
+
+ 
     /* Test of the calibration using CLOCK_REALTIME */ 
     struct timespec debut, fin, duration ; 
-    double duration_s_1, duration_s_2 ; 
+    double duration_s_1 ;  
     bool stop = false ; 
     double counter = 0.0 ; 
     double* pCounter = &counter ;
+    unsigned int nLoops = (unsigned int) a*duration_ms/1e3 + b ; 
  
     clock_gettime(CLOCK_REALTIME, &debut) ;
-    incr(10000, pCounter, &stop) ; 
+    incr(nLoops, pCounter, &stop) ; 
     clock_gettime(CLOCK_REALTIME, &fin) ;
     duration = fin - debut ; 
     duration_s_1 = timespec_to_ms(duration)/1e3 ; 
-
-    counter = 0.0 ; 
-    clock_gettime(CLOCK_REALTIME, &debut) ;
-    incr(100000, pCounter, &stop) ; 
-    clock_gettime(CLOCK_REALTIME, &fin) ;
-    duration = fin - debut ; 
-    duration_s_2 = timespec_to_ms(duration)/1e3 ;
-    
-    a = (100000 - 10000)/(duration_s_2 - duration_s_1) ;
-    b = 10000 - duration_s_1*a ; 
-    cout<<"Calibration using clock_gettime : l(t) = "<<a<<"*t + "<<b<<"   ( t(s) )   "<<endl ; 
-    
-    /* a is roughly the same in the two calibrations, however b differs a lot -> necessity to improve calib() */ 
+    cout<<"---- Test Calibration : real duration = "<<duration_s_1<<" seconds "<<endl ;  
+     
     
     return 0 ; 
     
