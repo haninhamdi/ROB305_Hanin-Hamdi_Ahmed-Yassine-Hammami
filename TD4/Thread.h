@@ -8,12 +8,13 @@ class Thread : public PosixThread
    private : 
      double startTime_ms_ ; 
      double stopTime_ms_ ;
+     bool started_ ; 
      pthread_t posixId ;
      pthread_attr_t posixAttr ; 
    public :
      Thread() ; 
      ~Thread() ; 
-     void start() ; 
+     bool start() ; 
      double startTime_ms() ;
      double stopTime_ms() ;
      void stopTime() ; 
