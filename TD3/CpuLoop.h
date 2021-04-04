@@ -1,14 +1,16 @@
-#include "CpuLoop.h"
+#ifndef CpuLoop_h_INCLUDED
+#define CpuLoop_h_INCLUDED
 
-using namespace std ; 
+#include "Looper.h" 
+#include "Calibrator.cpp" 
 
-CpuLoop::CpuLoop(Calibrator& calibrator) : calibrator_(calibrator) 
+class CpuLoop : public Looper
 {
-}
-void CpuLoop::runTime(double duration_ms)
-{
+    public :
+       CpuLoop(Calibrator& calibrator) ;
+       void runTime(double duration_ms) ;
+    private :
+       Calibrator& calibrator_ ;
+};
 
-  unsigned int nLoops = calibrator_.a_A()*duration_ms/1e3 + calibrator_.a_B() ;
-  cout<<"nLoops " <<nLoops<<endl ; 
-  runLoop(nLoops) ; 
-}
+#endif
