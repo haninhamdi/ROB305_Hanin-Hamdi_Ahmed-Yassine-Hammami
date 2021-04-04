@@ -70,20 +70,22 @@ bool PosixThread::setScheduling(int schedPolicy , int priority)
 
 bool PosixThread::getScheduling(int* p_schedPolicy , int* p_priority )
 {
-  int error , error_1 ;
+  int error ;
   sched_param schedParams ;
   schedParams.sched_priority = *p_priority ;
   if (isActive)
   {
     error = pthread_getschedparam(posixId, p_schedPolicy, &schedParams) ;
-    
+    cout<<"--- Return of pthread_getschedparam : "<<error<<endl ; 
     return true ;
   }
   else
   {
-    error_1 = pthread_attr_getschedparam(&posixAttr, &schedParams) ;
-    error_1 = pthread_attr_getschedpolicy(&posixAttr, p_schedPolicy) ;
-
+    error = pthread_attr_getschedparam(&posixAttr, &schedParams) ;
+    cout<<"--- Return of pthread__attr_getschedparam : "<<error<<endl ; 
+    error = pthread_attr_getschedpolicy(&posixAttr, p_schedPolicy) ;
+    cout<<"--- Return of pthread__attr_getschedpolicy : "<<error<<endl ; 
     return false ;
   }
 }
+
