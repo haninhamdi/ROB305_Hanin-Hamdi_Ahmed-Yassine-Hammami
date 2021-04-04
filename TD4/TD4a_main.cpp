@@ -52,11 +52,11 @@ int main(/*int argc, char* argv[]*/)
   cout<<"---- Third thread isActive = "<< (bool) test_active_3 << endl ; 
   
   /* Start the 3 threads */
-  incrementorThread_1.start() ;
+  test_active_1 = incrementorThread_1.start() ;
   cout<<"----- First thread started -----"<< endl ; 
-  incrementorThread_2.start() ;
+  test_active_2 = incrementorThread_2.start() ;
   cout<<"----- Second thread started ----"<< endl ;
-  incrementorThread_3.start() ;
+  test_active_3 = incrementorThread_3.start() ;
   cout<<"----- Third thread started -----"<< endl ;
   
   for (char cmd = 'r' ; cmd != 's' ; cin >> cmd)
@@ -88,3 +88,4 @@ int main(/*int argc, char* argv[]*/)
   
   return 0 ; 
 }
+
