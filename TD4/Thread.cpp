@@ -7,22 +7,33 @@ using namespace std ;
 Thread::Thread() : PosixThread()
 {
    cout<<"----Init thread -----"<<endl ; 
+   started_ = false ; 
 }
 
 Thread::~Thread() 
 {
 }
 
-void Thread::start() 
+bool Thread::start() 
 {
-  cout<<"---Starting Thread ---"<<endl ; 
-  /* Set startTime to current time */ 
-  timespec startTime_ts = timespec_now(); 
-  startTime_ms_ = timespec_to_ms(startTime_ts) ; 
+  if (not(started_))
+  {
+     cout<<"---Starting Thread ---"<<endl ; 
+     /* Set startTime to current time */ 
+     timespec startTime_ts = timespec_now(); 
+     startTime_ms_ = timespec_to_ms(startTime_ts) ; 
+     started_ = true ; 
   
-  cout<<"Waiting ..."<<endl ; 
-  PosixThread::start(call_run, (void*) this) ; 
-  cout<<"----Thread started ----"<<endl ; 
+     cout<<"Waiting ..."<<endl ; 
+     PosixThread::start(call_run, (void*) this) ; 
+     cout<<"----Thread started ----"<<endl ; 
+     return true ;  
+  }
+  else 
+  {
+     cout<<"Thread already started"<<endl ; 
+     return false ; 
+  }
 }
 
 double Thread::startTime_ms()
@@ -61,3 +72,4 @@ void* Thread::call_run(void* v_thread)
    pThread->run() ;
    return v_thread ; 
 }
+
