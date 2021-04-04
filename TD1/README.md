@@ -7,6 +7,6 @@ Binaries are available under the raspberry Pi 48
 - TD1d_main.cpp : ./TD1d_main_test \<duration of the timer in ms\>   --> You should see the final value of the counter after the expiration of the timer. 
 - TD1d_main_bis.cpp : ./TD1d_main_bis_test                         --> You should see two calibrations : with Posix timers and with the real_time_clock. The
                                                                        execution may take few seconds. 
-- TD1e_main.cpp : ./TD1e_main_test \<number of samples\> \<sampling period in ms\>    --> Here also you should see two walibrations with Posix Timers and ith the 
+- TD1e_main.cpp : ./TD1e_main_test \<number of samples : pair\> \<sampling period in ms\>    --> Here also you should see two walibrations with Posix Timers and ith the 
                                                                                       real_time_clock. The execution may take few seconds according to the sampling
                                                                                       period and the desired number of samples. 
