@@ -88,11 +88,11 @@ void calib(double* pA, double* pB)
     /* Calibration */
     double a = (doneLoops_6 - doneLoops_4) / 2.0 ; 
     *pA = a ; 
-    *pB = doneLoops_4 - 4.0*a ;
+    *pB = ((doneLoops_4 + doneLoops_6) - 10.0*a)/2 ;
   
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     cout<< "------------------------------------------------------------" <<endl ;
     cout<< "-------------- ROB305 TD1D_bis : Calibration ---------------" <<endl ; 
@@ -103,6 +103,12 @@ int main()
     double a, b ;
     double* pA = &a ; 
     double* pB = &b ; 
+    double duration_ms ; 
+    
+    if ( argc > 1)
+    {
+       duration_ms = stoi(argv[1], nullptr, 10) ;
+    }
     
     /* Calibration using timers */
     calib(pA, pB) ; 
@@ -110,27 +116,19 @@ int main()
     
     /* Test of the calibration using CLOCK_REALTIME */ 
     struct timespec debut, fin, duration ; 
-    double duration_s_1, duration_s_2 ; 
+    double duration_s_1 ;  
     bool stop = false ; 
     double counter = 0.0 ; 
     double* pCounter = &counter ;
+    unsigned int nLoops = (unsigned int) a*duration_ms/1e3 + b ; 
  
     clock_gettime(CLOCK_REALTIME, &debut) ;
-    incr(10000, pCounter, &stop) ; 
+    incr(nLoops, pCounter, &stop) ; 
     clock_gettime(CLOCK_REALTIME, &fin) ;
     duration = fin - debut ; 
     duration_s_1 = timespec_to_ms(duration)/1e3 ; 
-
-    counter = 0.0 ; 
-    clock_gettime(CLOCK_REALTIME, &debut) ;
-    incr(100000, pCounter, &stop) ; 
-    clock_gettime(CLOCK_REALTIME, &fin) ;
-    duration = fin - debut ; 
-    duration_s_2 = timespec_to_ms(duration)/1e3 ;
+    cout<<"---- Test Calibration : real duration = "<<duration_s_1<<" seconds "<<endl ; 
     
-    a = (100000 - 10000)/(duration_s_2 - duration_s_1) ;
-    b = 10000 - duration_s_1*a ; 
-    cout<<"Calibration using clock_gettime : l(t) = "<<a<<"*t + "<<b<<"   ( t(s) )   "<<endl ; 
     
     /* a is roughly the same in the two calibrations, however b differs a lot -> necessity to improve calib() */ 
     
