@@ -1,6 +1,6 @@
 
-Instructions to execute files of this repository : 
-Binaries are available under the raspberry Pi 48 
+Instructions to execute files of this repository : Binaries are available under the raspberry Pi 48/TD1
+-
 - TD1a_main.cpp : ./TD1a_main_test \<duration in ms\> 
 - TD1b_main.cpp : ./TD1b_main_test                                 --> you should see numbers from 1 to 15 printed on the screen each 0.5 seconds. 
 - TD1c_main.cpp : ./TD1c_main_test \<number of desired loops\>       --> You should see printed the final value of the pointer and the total duration of the loop
